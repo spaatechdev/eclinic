@@ -1,0 +1,118 @@
+{% extends "admin/base.html" %}
+{% load static %}
+{% load template_func %}
+
+{% block css %}
+<style>
+    .edit-role h4 {
+        background: #f3f3f3;
+        padding: 3px 10px;
+        font-weight: 600;
+        font-size: 15px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="pagetitle">
+    <h1>Add Role</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'admin:dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'admin:roleList' %}">Role List</a></li>
+            <li class="breadcrumb-item">Add Role</li>
+        </ol>
+    </nav>
+</div>
+<section class="section">
+    {% if messages %}
+    {% for message in messages %}
+    {% if forloop.counter == 1 %}
+    <div class="{{ message.tags }}" style="height: 30px;">{{ message }}</div>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4 class="card-title">Add Role</h4>
+                        </div>
+                        <div class="col-md-6 mt-3">
+                            <div class="float-end">
+                                <a href="{% url 'admin:roleList' %}" class="btn btn-primary btn-sm">Back</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <form class="forms-sample" action="{% url 'admin:roleAdd' %}" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="name">Role Name</label>
+                                <input type="text" class="form-control" name="name" id="name" placeholder="" required>
+                            </div>
+                            {% if content_types|length > 0 %}
+                            <div class="row mt-4">
+                                <div class="col-12 mb-4">
+                                    <div class="d-flex justift-content-between mx-2">
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="select_all">
+                                            <label class="form-check-label" for="select_all"
+                                                style="margin-right:12px;">Select All</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% for each in content_types %}
+                                <div class="col-lg-6 col-md-6 edit-role">
+                                    <h4>{{each.model}}</h4>
+                                    <div class="d-flex justift-content-between mx-2">
+                                        {% for permissionDetail in each.permission_set.all %}
+                                        {% if permissionDetail.codename|permission_text != 'view' %}
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input"
+                                                id="{{permissionDetail.codename}}" name="permission[]"
+                                                value="{{permissionDetail.id}}">
+                                            <label class="form-check-label" for="{{permissionDetail.codename}}"
+                                                style="margin-right:12px;">{{permissionDetail.codename|permission_text|title}}</label>
+                                        </div>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            {% if request.user.is_superuser == 1 or 'add_role'|get_session_permission:request is not None %}
+                            <div class="mt-3">
+                                <button type="submit" class="btn btn-success me-2">Submit</button>
+                                <button type="reset" class="btn btn-light">Reset</button>
+                            </div>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block js %}
+<script>
+    $(document).on('click touchstart', '#select_all', function () {
+        if ($(this).prop('checked') == true) {
+            $('.edit-role').find('input[type=checkbox]').each(function () {
+                this.checked = true;
+            });
+        } else {
+            $('.edit-role').find('input[type=checkbox]').each(function () {
+                this.checked = false;
+            });
+        }
+    })
+</script>
+{% endblock %}

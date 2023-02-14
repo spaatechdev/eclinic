@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Permission
 from .managers import UserManager
+from django.utils.timezone import now
+from django.core.validators import RegexValidator
+from django.utils.text import gettext_lazy as _
 
 
 class UserType(models.Model):
@@ -144,14 +147,75 @@ class City(models.Model):
         verbose_name_plural = 'city'
 
 
-class UserDetail(models.Model):
+class Gender(models.Model):
+    name = models.CharField(max_length=15)
+    status = models.SmallIntegerField(default=1)
+    deleted = models.BooleanField(default=0)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        managed = True
+        db_table = 'gender'
+        verbose_name_plural = 'gender'
+
+
+class Specialization(models.Model):
+    name = models.CharField(max_length=15)
+    status = models.SmallIntegerField(default=1)
+    deleted = models.BooleanField(default=0)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        managed = True
+        db_table = 'specialization'
+        verbose_name_plural = 'specialization'
+
+
+class BloodGroup(models.Model):
+    name = models.CharField(max_length=15)
+    status = models.SmallIntegerField(default=1)
+    deleted = models.BooleanField(default=0)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        managed = True
+        db_table = 'blood_group'
+        verbose_name_plural = 'blood_group'
+
+
+class DoctorDetail(models.Model):
     user = models.ForeignKey(User, related_name='UserDetail',
                              on_delete=models.CASCADE, null=True, blank=True)
-    field = models.CharField(max_length=255)
-    value = models.TextField(blank=True, null=True)
+    profile_pic = models.CharField(max_length=255, blank=True, null=True)
+    gender = models.ForeignKey(
+        Gender, on_delete=models.CASCADE, blank=True, null=True)
+    specialization = models.ForeignKey(
+        Specialization, on_delete=models.CASCADE, blank=True, null=True)
+    dob = models.DateField(blank=True, null=True)
+    blood_group = models.ForeignKey(
+        BloodGroup, on_delete=models.CASCADE, blank=True, null=True)
+    address = models.CharField(max_length=50, blank=True, null=True)
+    locality = models.CharField(max_length=50, blank=True, null=True)
+    pin = models.CharField(max_length=6, validators=[
+                           RegexValidator('^[0-9]{6}$', _('Invalid Pin Number'))])
+    country = models.ForeignKey(
+        Country, on_delete=models.CASCADE, blank=True, null=True)
+    state = models.ForeignKey(
+        State, on_delete=models.CASCADE, blank=True, null=True)
+    city = models.ForeignKey(
+        City, on_delete=models.CASCADE, blank=True, null=True)
+    alternate_number = models.CharField(max_length=15, blank=True, null=True)
+    languages = models.CharField(max_length=250, blank=True, null=True)
+    status = models.SmallIntegerField(default=1)
     deleted = models.BooleanField(default=0)
 
     class Meta:
         managed = True
-        db_table = 'user_detail'
-        verbose_name_plural = "user_detail"
+        db_table = 'doctor_detail'
+        verbose_name_plural = "doctor_detail"

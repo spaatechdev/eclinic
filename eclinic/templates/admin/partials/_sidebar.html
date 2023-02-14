@@ -1,0 +1,45 @@
+{% load template_func %}
+<aside id="sidebar" class="sidebar">
+
+  <ul class="sidebar-nav" id="sidebar-nav">
+
+    <li class="nav-item">
+      <a class="nav-link {% if request.path == '/admin/dashboard' %}active{% endif %}" href="{% url 'admin:dashboard' %}">
+        <i class="bi bi-grid"></i>
+        <span>Dashboard</span>
+      </a>
+    </li>
+    <!-- End Dashboard Nav -->
+
+    <li class="nav-item">
+      <a class="nav-link {% if request.path not in '/admin/specialization,/admin/roleList,/admin/userList' %}collapsed{% endif %}"
+        data-bs-target="#master-nav" data-bs-toggle="collapse" href="#"
+        aria-expanded="{% if request.path in '/admin/specialization,/admin/roleList,/admin/userList' %}true{% endif %}">
+        <i class="bi bi-menu-button-wide"></i><span>Master Data</span><i
+          class="bi bi-chevron-right ms-auto"></i>
+      </a>
+      <ul id="master-nav"
+        class="nav-content collapse {% if request.path in '/admin/specialization,/admin/roleList,/admin/userList' %}show{% endif %}"
+        data-bs-parent="#sidebar-nav">
+        {% if request.user.is_superuser == 1 %}
+        <li>
+          <a href="{% url 'admin:roleList' %}" class="{% if request.path == '/admin/roleList' %}active{% endif %}">
+            <i class="bi bi-circle"></i><span>Roles</span>
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'admin:userList' %}" class="{% if request.path == '/admin/userList' %}active{% endif %}">
+            <i class="bi bi-circle"></i><span>Users</span>
+          </a>
+        </li>
+        <li>
+          <a href="{% url 'admin:specializationList' %}" class="{% if request.path == '/admin/specializationList' %}active{% endif %}">
+            <i class="bi bi-circle"></i><span>Specialization</span>
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </li>
+    <!-- End Masters Nav -->
+  </ul>
+</aside>

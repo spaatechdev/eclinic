@@ -1,0 +1,185 @@
+{% extends "admin/base.html" %}
+{% load static %}
+{% load template_func %}
+
+{% block content %}
+<div>
+    <div class="pagetitle">
+        <h1>User List</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'admin:dashboard' %}">Home</a></li>
+                <li class="breadcrumb-item">User List</li>
+            </ol>
+        </nav>
+    </div>
+    <section class="section">
+        {% if messages %}
+        {% for message in messages %}
+        {% if forloop.counter == 1 %}
+        <div class="{{ message.tags }}" style="height: 30px;">{{ message }}</div>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+        <div class="row">
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4 class="card-title">Users</h4>
+                            </div>
+                            {% if request.user.is_superuser == 1 or 'add_user'|get_session_permission:request is not None %}
+                            <div class="col-md-6 mt-3">
+                                <div class="float-end">
+                                    <a href="{% url 'admin:userAdd' %}" class="btn btn-primary btn-sm">Add</a>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-lg-4 mb-3">
+                            <form method="GET" id="search_form">
+                                <div class="search">
+                                    <input type="text" class="form-control key_search" name="keyword" value="{{ request.GET.keyword }}" placeholder="Search Here">
+                                    <button class="btn btn-primary" type="submit">Search</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="row fs-12">
+                            <div class="table-responsive">
+                                <table class="table table-striped datatable">
+                                    <thead>
+                                        <tr class="fs-12">
+                                            <th>
+                                                Name
+                                            </th>
+                                            <th>
+                                                Email
+                                            </th>
+                                            <th>
+                                                Phone
+                                            </th>
+                                            <th>
+                                                Role
+                                            </th>
+                                            <th>
+                                                Date Joined
+                                            </th>
+                                            <th>
+                                                Action
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for user in users %}
+                                        <tr class="fs-12">
+                                            <td class="py-1">
+                                                {{user.name}}
+                                            </td>
+                                            <td>
+                                                {{user.email}}
+                                            </td>
+                                            <td>
+                                                {{user.phone}}
+                                            </td>
+                                            <td>
+                                                {{user.role.name}}
+                                            </td>
+                                            <td>
+                                                {{user.date_joined|date:"M d, Y"}}
+                                            </td>
+                                            <td>
+                                                {% if request.user.is_superuser == 1 or 'change_user'|get_session_permission:request is not None %}
+                                                <a href="{% url 'admin:userEdit' user.id %}" class="btn btn-info btn-sm">
+                                                    Edit </a>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        {% if users.paginator.num_pages > 1 %}
+                        <div class="float-end mt-3 custom_paginator">
+                            <ul class="pagination justify-content-center">
+                                {% if users.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?{% param_replace page=1 %}">
+                                        First
+                                    </a>
+                                </li>
+                                {% else %}
+                                <li class="page-item paginate_button disabled">
+                                    <a class="page-link" href="#">
+                                        First
+                                    </a>
+                                </li>
+                                {% endif %}
+                                {% if users.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?{% param_replace page=users.previous_page_number %}">
+                                        &laquo;
+                                    </a>
+                                </li>
+                                {% else %}
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#">
+                                        &laquo;
+                                    </a>
+                                </li>
+                                {% endif %}
+                                {% for i in users.paginator.page_range %}
+                                {% if users.number == i %}
+                                <li class="page-item active">
+                                    <a class="page-link" href="#">{{ i }} <span class="sr-only"></span>
+                                    </a>
+                                </li>
+                                {% elif users.number > i|add:"-3" and users.number < i|add:"+3"%} 
+                                <li class="page-item"><a class="page-link" href="?{% param_replace page=i %}">{{ i }}</a></li>
+                                {% endif %}
+                                {% endfor %}
+                                {% if users.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?{% param_replace page=users.next_page_number %}">
+                                        &raquo;
+                                    </a>
+                                </li>
+                                {% else %}
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#">
+                                        &raquo;
+                                    </a>
+                                </li>
+                                {% endif %}
+                                {% if users.paginator.num_pages != users.number %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?{% param_replace page=users.paginator.num_pages %}">
+                                        Last
+                                    </a>
+                                </li>
+                                {% else %}
+                                <li class="page-item disabled"><a class="page-link" href="#">Last</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+    // var timer;
+    // $(document).on('keyup', '.key_search', function () {
+    //     timer && clearTimeout(timer);
+    //     timer = setTimeout(function () {
+    //         $("#search_form").submit();
+    //     }, 300);
+    // });
+</script>
+{% endblock %}

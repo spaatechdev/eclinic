@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'front'
+    'front',
+    'front.templatetags'
 ]
 
 MIDDLEWARE = [
@@ -165,7 +166,7 @@ MESSAGE_TAGS = {
 
 AUTHENTICATION_BACKENDS = [
     'front.backends.AuthBackend',
-    'django.contrib.auth.backends.ModelBackend'
+    # 'django.contrib.auth.backends.ModelBackend'
 ]
 
 EMAIL_BACKEND = env("EMAIL_BACKEND")
