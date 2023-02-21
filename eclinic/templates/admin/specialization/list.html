@@ -4,11 +4,11 @@
 
 {% block content %}
 <div class="pagetitle">
-    <h1>Role List</h1>
+    <h1>Specialization List</h1>
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'admin:dashboard' %}">Home</a></li>
-            <li class="breadcrumb-item">Role List</li>
+            <li class="breadcrumb-item">Specialization List</li>
         </ol>
     </nav>
 </div>
@@ -26,12 +26,12 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <h4 class="card-title">Roles</h4>
+                            <h4 class="card-title">Specializations</h4>
                         </div>
-                        {% if request.user.is_superuser == 1 or 'add_role'|get_session_permission:request is not None %}
+                        {% if request.user.is_superuser == 1 or 'add_specialization'|get_session_permission:request is not None %}
                         <div class="col-md-6 mt-3">
                             <div class="float-end">
-                                <a href="{% url 'admin:roleAdd' %}" class="btn btn-primary btn-sm">Add</a>
+                                <a href="{% url 'admin:specializationAdd' %}" class="btn btn-primary btn-sm">Add</a>
                             </div>
                         </div>
                         {% endif %}
@@ -53,7 +53,7 @@
                                             SL No.
                                         </th>
                                         <th>
-                                            Role Name
+                                            Specialization Name
                                         </th>
                                         <th>
                                             Action
@@ -61,25 +61,23 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for role in roles %}
+                                    {% for each in result %}
                                     <tr>
                                         <td class="py-1">
                                             {{forloop.counter}}
                                         </td>
                                         <td>
-                                            {{role.name}}
+                                            {{each.name}}
                                         </td>
                                         <td>
-                                            {% if request.user.is_superuser == 1 or 'change_role'|get_session_permission:request is not None %}
-                                            <a href="{% url 'admin:roleEdit' role.id %}" class="btn btn-info btn-sm">
+                                            {% if request.user.is_superuser == 1 or 'change_specialization'|get_session_permission:request is not None %}
+                                            <a href="{% url 'admin:specializationEdit' each.id %}" class="btn btn-info btn-sm">
                                                 Edit </a>
-                                            <a href="{% url 'admin:rolePermissions' role.id %}" class="btn btn-info btn-sm">
-                                                Permissions </a>
                                             {% endif %}
-                                            {% if request.user.is_superuser == 1 or 'delete_role'|get_session_permission:request is not None %}
-                                            <a onclick="return confirm('Are you sure you want to delete this?')"
-                                                href="{% url 'admin:roleDelete' role.id %}" class="btn btn-danger btn-sm">
-                                                Delete </a>
+                                            {% if request.user.is_superuser == 1 or 'delete_specialization'|get_session_permission:request is not None %}
+                                            <!-- <a onclick="return confirm('Are you sure you want to delete this?')"
+                                                href="{% url 'admin:specializationDelete' each.id %}" class="btn btn-danger btn-sm">
+                                                Delete </a> -->
                                             {% endif %}
                                         </td>
                                     </tr>
@@ -88,10 +86,10 @@
                             </table>
                         </div>
                     </div>
-                    {% if roles.paginator.num_pages > 1 %}
+                    {% if result.paginator.num_pages > 1 %}
                     <div class="float-end mt-3 custom_paginator">
                         <ul class="pagination justify-content-center">
-                            {% if roles.has_previous %}
+                            {% if result.has_previous %}
                             <li class="page-item">
                                 <a class="page-link" href="?{% param_replace page=1 %}">
                                     First
@@ -104,9 +102,9 @@
                                 </a>
                             </li>
                             {% endif %}
-                            {% if roles.has_previous %}
+                            {% if result.has_previous %}
                             <li class="page-item">
-                                <a class="page-link" href="?{% param_replace page=roles.previous_page_number %}">
+                                <a class="page-link" href="?{% param_replace page=result.previous_page_number %}">
                                     &laquo;
                                 </a>
                             </li>
@@ -117,19 +115,19 @@
                                 </a>
                             </li>
                             {% endif %}
-                            {% for i in roles.paginator.page_range %}
-                            {% if roles.number == i %}
+                            {% for i in result.paginator.page_range %}
+                            {% if result.number == i %}
                             <li class="page-item active">
                                 <a class="page-link" href="#">{{ i }} <span class="sr-only"></span>
                                 </a>
                             </li>
-                            {% elif roles.number > i|add:"-3" and roles.number < i|add:"+3"%} 
+                            {% elif result.number > i|add:"-3" and result.number < i|add:"+3"%} 
                             <li class="page-item"><a class="page-link" href="?{% param_replace page=i %}">{{ i }}</a></li>
                             {% endif %}
                             {% endfor %}
-                            {% if roles.has_next %}
+                            {% if result.has_next %}
                             <li class="page-item">
-                                <a class="page-link" href="?{% param_replace page=roles.next_page_number %}">
+                                <a class="page-link" href="?{% param_replace page=result.next_page_number %}">
                                     &raquo;
                                 </a>
                             </li>
@@ -140,9 +138,9 @@
                                 </a>
                             </li>
                             {% endif %}
-                            {% if roles.paginator.num_pages != roles.number %}
+                            {% if result.paginator.num_pages != result.number %}
                             <li class="page-item">
-                                <a class="page-link" href="?{% param_replace page=roles.paginator.num_pages %}">
+                                <a class="page-link" href="?{% param_replace page=result.paginator.num_pages %}">
                                     Last
                                 </a>
                             </li>

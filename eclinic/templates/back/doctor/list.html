@@ -1,0 +1,103 @@
+{% extends "back/base.html" %}
+{% load static %}
+{% load template_func %}
+
+{% block content %}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+    
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3 class="page-title">Doctors List</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Doctor List</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /Page Header -->
+        
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-lg-6">
+                                <form method="GET" id="search_form">
+                                    <div class="search">
+                                        <input type="text" class="form-control key_search" name="keyword" value="{{ request.GET.keyword }}" placeholder="Search Here">
+                                        <button class="btn btn-primary" type="submit">Search</button>
+                                    </div>
+                                </form>
+                            </div>
+                            {% if request.user.is_superuser == 1 or 'add_doctordetail'|get_session_permission:request is not None %}
+                            <div class="col-md-6">
+                                <div class="float-right">
+                                    <a href="{% url 'doctorAdd' %}" class="btn btn-primary btn-sm">Add</a>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="table-responsive">
+                            <table class="datatable table table-hover table-center mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Speciality</th>
+                                        <th>Address</th>
+                                        <th>Phone Number</th>
+                                        <th>Language</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for each in result %}
+                                    <tr>
+                                        <td>
+                                            <h2 class="table-avatar">
+                                                <a href="#" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="{{each.doctordetail_set.all.0.profile_pic}}" alt="User Image"></a>
+                                                <a href="#">{{each.name}}</a>
+                                            </h2>
+                                        </td>
+                                        <td>{{each.doctordetail_set.all.0.specialization.name}}</td>
+                                        
+                                        <td>{{each.doctordetail_set.all.0.address}}<br/>{{each.doctordetail_set.all.0.locality}}</td>
+
+                                        <td>{{each.phone}}</td>
+                                        
+                                        <td>
+                                            {{each.doctordetail_set.all.0.language.name}}
+                                        </td>
+
+                                        <td>
+                                            <a href="{% url 'doctorEdit' each.id %}" class="btn btn-info btn-sm">
+                                                Edit </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>			
+        </div>
+        
+    </div>			
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+    // var timer;
+    // $(document).on('keyup', '.key_search', function () {
+    //     timer && clearTimeout(timer);
+    //     timer = setTimeout(function () {
+    //         $("#search_form").submit();
+    //     }, 300);
+    // });
+</script>
+{% endblock %}

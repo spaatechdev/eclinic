@@ -22,4 +22,9 @@ urlpatterns = [
     path('specializationAdd', views.specializationAdd, name='specializationAdd'),
     path('specializationEdit/<int:id>', views.specializationEdit, name='specializationEdit'),
     path('specializationDelete/<int:id>', views.specializationDelete, name='specializationDelete'),
+
+    path('languageList', views.languageList, name='languageList'),
+    path('languageAdd', views.languageAdd, name='languageAdd'),
+    path('languageEdit/<int:id>', views.languageEdit, name='languageEdit'),
+    path('languageDelete/<int:id>', views.languageDelete, name='languageDelete'),
 ]

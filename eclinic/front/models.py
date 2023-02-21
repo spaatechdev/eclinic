@@ -6,20 +6,6 @@ from django.core.validators import RegexValidator
 from django.utils.text import gettext_lazy as _
 
 
-class UserType(models.Model):
-    name = models.CharField(max_length=20)
-    status = models.SmallIntegerField(default=1)
-    deleted = models.BooleanField(default=0)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        managed = True
-        db_table = 'user_type'
-        verbose_name_plural = 'user_type'
-
-
 class Role(models.Model):
     name = models.CharField(max_length=20)
     status = models.SmallIntegerField(default=1)
@@ -54,8 +40,6 @@ class User(AbstractUser):
     pswd_token = models.CharField(max_length=255, blank=True, null=True)
     role = models.ForeignKey(
         Role, related_name='userRole', on_delete=models.CASCADE, blank=True, null=True)
-    user_type = models.ForeignKey(
-        UserType, related_name='userType', on_delete=models.CASCADE, blank=True, null=True)
 
     USERNAME_FIELD = 'phone'
     REQUIRED_FIELDS = ['name', 'email']
@@ -189,9 +173,23 @@ class BloodGroup(models.Model):
         verbose_name_plural = 'blood_group'
 
 
+class Language(models.Model):
+    name = models.CharField(max_length=15)
+    status = models.SmallIntegerField(default=1)
+    deleted = models.BooleanField(default=0)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        managed = True
+        db_table = 'language'
+        verbose_name_plural = 'language'
+
+
 class DoctorDetail(models.Model):
-    user = models.ForeignKey(User, related_name='UserDetail',
-                             on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=True, blank=True)
     profile_pic = models.CharField(max_length=255, blank=True, null=True)
     gender = models.ForeignKey(
         Gender, on_delete=models.CASCADE, blank=True, null=True)
@@ -211,7 +209,7 @@ class DoctorDetail(models.Model):
     city = models.ForeignKey(
         City, on_delete=models.CASCADE, blank=True, null=True)
     alternate_number = models.CharField(max_length=15, blank=True, null=True)
-    languages = models.CharField(max_length=250, blank=True, null=True)
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
     status = models.SmallIntegerField(default=1)
     deleted = models.BooleanField(default=0)
 

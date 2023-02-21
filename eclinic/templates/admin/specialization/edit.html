@@ -4,12 +4,12 @@
 
 {% block content %}
 <div class="pagetitle">
-    <h1>Edit Role</h1>
+    <h1>Edit Specialization</h1>
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'admin:dashboard' %}">Home</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'admin:roleList' %}">Role List</a></li>
-            <li class="breadcrumb-item">Edit Role</li>
+            <li class="breadcrumb-item"><a href="{% url 'admin:specializationList' %}">Specialization List</a></li>
+            <li class="breadcrumb-item">Edit Specialization</li>
         </ol>
     </nav>
 </div>
@@ -27,24 +27,24 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <h4 class="card-title">Edit Role</h4>
+                            <h4 class="card-title">Edit Specialization</h4>
                         </div>
                         <div class="col-md-6 mt-3">
                             <div class="float-end">
-                                <a href="{% url 'admin:roleList' %}" class="btn btn-primary btn-sm">Back</a>
+                                <a href="{% url 'admin:specializationList' %}" class="btn btn-primary btn-sm">Back</a>
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <form class="forms-sample" action="{% url 'admin:roleEdit' role.id %}" method="post">
+                        <form class="forms-sample" action="{% url 'admin:specializationEdit' result.id %}" method="post">
                             {% csrf_token %}
-                            <input type="hidden" name="id" value="{{role.id}}">
+                            <input type="hidden" name="id" value="{{result.id}}">
                             <div class="form-group">
-                                <label for="name">Role Name</label>
+                                <label for="name">Specialization Name</label>
                                 <input type="text" class="form-control" name="name" id="name" placeholder=""
-                                    value="{{role.name}}" required>
+                                    value="{{result.name}}" required>
                             </div>
-                            {% if request.user.is_superuser == 1 or 'change_role'|get_session_permission:request is not None %}
+                            {% if request.user.is_superuser == 1 or 'change_specialization'|get_session_permission:request is not None %}
                             <div class="mt-3">
                                 <button type="submit" class="btn btn-success me-2">Update</button>
                                 <button type="reset" class="btn btn-light">Reset</button>

@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from dreamguys.co.in/demo/doccure/admin/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 30 Nov 2019 04:12:20 GMT -->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>{{project_name}}</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'common/images/logo/favicon.png' %}">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'back/css/bootstrap.min.css' %}">
+
+    <!-- Fontawesome CSS -->
+    <link rel="stylesheet" href="{% static 'back/css/font-awesome.min.css' %}">
+
+    <!-- Feathericon CSS -->
+    <link rel="stylesheet" href="{% static 'back/css/feathericon.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'back/plugins/morris/morris.css' %}">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{% static 'back/css/style.css' %}">
+
+    <link rel="stylesheet" href="{% static 'back/css/custom.css' %}">
+
+    <link rel="stylesheet" href="{% static 'admin/select2/select2.min.css' %}">
+
+    <!--[if lt IE 9]>
+			<script src="{% static 'back/js/html5shiv.min.js' %}"></script>
+			<script src="{% static 'back/js/respond.min.js' %}"></script>
+		<![endif]-->
+    <!-- jQuery -->
+    <script src="{% static 'back/js/jquery.min.js' %}"></script>
+    {% block css %}
+    {% endblock %}
+</head>
+
+<body>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+
+        <!-- Header -->
+        {% include "back/partials/_header.html" %}
+        <!-- /Header -->
+
+        <!-- Sidebar -->
+        {% include "back/partials/_sidebar.html" %}
+        <!-- /Sidebar -->
+
+        <!-- Page Wrapper -->
+        {% block content %}
+        {% endblock %}
+        <!-- /Page Wrapper -->
+
+    </div>
+    <!-- /Main Wrapper -->
+
+    <!-- Bootstrap Core JS -->
+    <script src="{% static 'back/js/popper.min.js' %}"></script>
+    <script src="{% static 'back/js/bootstrap.min.js' %}"></script>
+
+    <!-- Slimscroll JS -->
+    <script src="{% static 'back/plugins/slimscroll/jquery.slimscroll.min.js' %}"></script>
+
+    <!-- <script src="{% static 'back/plugins/raphael/raphael.min.js' %}"></script> -->
+    <!-- <script src="{% static 'back/plugins/morris/morris.min.js' %}"></script>
+    <script src="{% static 'back/js/chart.morris.js' %}"></script> -->
+
+    <!-- Custom JS -->
+    <script src="{% static 'back/js/script.js' %}"></script>
+
+    <script src="{% static 'admin/select2/select2.min.js' %}"></script>
+    {% block js %}
+    {% endblock %}
+
+</body>
+
+</html>

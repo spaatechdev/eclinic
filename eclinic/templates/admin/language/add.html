@@ -1,0 +1,74 @@
+{% extends "admin/base.html" %}
+{% load static %}
+{% load template_func %}
+
+{% block css %}
+<style>
+    .edit-role h4 {
+        background: #f3f3f3;
+        padding: 3px 10px;
+        font-weight: 600;
+        font-size: 15px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="pagetitle">
+    <h1>Add Language</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'admin:dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'admin:languageList' %}">Language List</a></li>
+            <li class="breadcrumb-item">Add Language</li>
+        </ol>
+    </nav>
+</div>
+<section class="section">
+    {% if messages %}
+    {% for message in messages %}
+    {% if forloop.counter == 1 %}
+    <div class="{{ message.tags }}" style="height: 30px;">{{ message }}</div>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4 class="card-title">Add Language</h4>
+                        </div>
+                        <div class="col-md-6 mt-3">
+                            <div class="float-end">
+                                <a href="{% url 'admin:languageList' %}" class="btn btn-primary btn-sm">Back</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <form class="forms-sample" action="{% url 'admin:languageAdd' %}" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="name">Language</label>
+                                <input type="text" class="form-control" name="name" id="name" placeholder="" required>
+                            </div>
+                            {% if request.user.is_superuser == 1 or 'add_language'|get_session_permission:request is not None %}
+                            <div class="mt-3">
+                                <button type="submit" class="btn btn-success me-2">Submit</button>
+                                <button type="reset" class="btn btn-light">Reset</button>
+                            </div>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block js %}
+{% endblock %}

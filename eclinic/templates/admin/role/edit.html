@@ -36,13 +36,13 @@
                         </div>
                     </div>
                     <div class="row">
-                        <form class="forms-sample" action="{% url 'admin:roleEdit' role.id %}" method="post">
+                        <form class="forms-sample" action="{% url 'admin:roleEdit' result.id %}" method="post">
                             {% csrf_token %}
-                            <input type="hidden" name="id" value="{{role.id}}">
+                            <input type="hidden" name="id" value="{{result.id}}">
                             <div class="form-group">
                                 <label for="name">Role Name</label>
                                 <input type="text" class="form-control" name="name" id="name" placeholder=""
-                                    value="{{role.name}}" required>
+                                    value="{{result.name}}" required>
                             </div>
                             {% if request.user.is_superuser == 1 or 'change_role'|get_session_permission:request is not None %}
                             <div class="mt-3">

@@ -71,26 +71,26 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for user in users %}
+                                        {% for each in result %}
                                         <tr class="fs-12">
                                             <td class="py-1">
-                                                {{user.name}}
+                                                {{each.name}}
                                             </td>
                                             <td>
-                                                {{user.email}}
+                                                {{each.email}}
                                             </td>
                                             <td>
-                                                {{user.phone}}
+                                                {{each.phone}}
                                             </td>
                                             <td>
-                                                {{user.role.name}}
+                                                {{each.role.name}}
                                             </td>
                                             <td>
-                                                {{user.date_joined|date:"M d, Y"}}
+                                                {{each.date_joined|date:"M d, Y"}}
                                             </td>
                                             <td>
                                                 {% if request.user.is_superuser == 1 or 'change_user'|get_session_permission:request is not None %}
-                                                <a href="{% url 'admin:userEdit' user.id %}" class="btn btn-info btn-sm">
+                                                <a href="{% url 'admin:userEdit' each.id %}" class="btn btn-info btn-sm">
                                                     Edit </a>
                                                 {% endif %}
                                             </td>
@@ -100,10 +100,10 @@
                                 </table>
                             </div>
                         </div>
-                        {% if users.paginator.num_pages > 1 %}
+                        {% if result.paginator.num_pages > 1 %}
                         <div class="float-end mt-3 custom_paginator">
                             <ul class="pagination justify-content-center">
-                                {% if users.has_previous %}
+                                {% if result.has_previous %}
                                 <li class="page-item">
                                     <a class="page-link" href="?{% param_replace page=1 %}">
                                         First
@@ -116,9 +116,9 @@
                                     </a>
                                 </li>
                                 {% endif %}
-                                {% if users.has_previous %}
+                                {% if result.has_previous %}
                                 <li class="page-item">
-                                    <a class="page-link" href="?{% param_replace page=users.previous_page_number %}">
+                                    <a class="page-link" href="?{% param_replace page=result.previous_page_number %}">
                                         &laquo;
                                     </a>
                                 </li>
@@ -129,19 +129,19 @@
                                     </a>
                                 </li>
                                 {% endif %}
-                                {% for i in users.paginator.page_range %}
-                                {% if users.number == i %}
+                                {% for i in result.paginator.page_range %}
+                                {% if result.number == i %}
                                 <li class="page-item active">
                                     <a class="page-link" href="#">{{ i }} <span class="sr-only"></span>
                                     </a>
                                 </li>
-                                {% elif users.number > i|add:"-3" and users.number < i|add:"+3"%} 
+                                {% elif result.number > i|add:"-3" and result.number < i|add:"+3"%} 
                                 <li class="page-item"><a class="page-link" href="?{% param_replace page=i %}">{{ i }}</a></li>
                                 {% endif %}
                                 {% endfor %}
-                                {% if users.has_next %}
+                                {% if result.has_next %}
                                 <li class="page-item">
-                                    <a class="page-link" href="?{% param_replace page=users.next_page_number %}">
+                                    <a class="page-link" href="?{% param_replace page=result.next_page_number %}">
                                         &raquo;
                                     </a>
                                 </li>
@@ -152,9 +152,9 @@
                                     </a>
                                 </li>
                                 {% endif %}
-                                {% if users.paginator.num_pages != users.number %}
+                                {% if result.paginator.num_pages != result.number %}
                                 <li class="page-item">
-                                    <a class="page-link" href="?{% param_replace page=users.paginator.num_pages %}">
+                                    <a class="page-link" href="?{% param_replace page=result.paginator.num_pages %}">
                                         Last
                                     </a>
                                 </li>

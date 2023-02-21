@@ -37,6 +37,11 @@
             <i class="bi bi-circle"></i><span>Specialization</span>
           </a>
         </li>
+        <li>
+          <a href="{% url 'admin:languageList' %}" class="{% if request.path == '/admin/languageList' %}active{% endif %}">
+            <i class="bi bi-circle"></i><span>Language</span>
+          </a>
+        </li>
         {% endif %}
       </ul>
     </li>

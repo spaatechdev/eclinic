@@ -49,9 +49,9 @@
                         </div>
                     </div>
                     <div class="row">
-                        <form class="forms-sample" action="{% url 'admin:rolePermissions' role.id %}" method="post">
+                        <form class="forms-sample" action="{% url 'admin:rolePermissions' result.id %}" method="post">
                             {% csrf_token %}
-                            <input type="hidden" name="role_id" value="{{role.id}}">
+                            <input type="hidden" name="role_id" value="{{result.id}}">
                             <div class="row mt-3">
                                 <div class="col-12 mb-4">
                                     <div class="d-flex justift-content-between mx-2">

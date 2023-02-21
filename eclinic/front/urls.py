@@ -10,4 +10,11 @@ urlpatterns = [
     path('forgot-password', views.forgot, name='forgot'),
     path('enter_otp', views.enter_otp, name='enter_otp'),
     path('password_reset', views.password_reset, name='password_reset'),
+
+    path('dashboard', views.dashboard, name='dashboard'),
+    
+    path('doctorList', views.doctorList, name='doctorList'),
+    path('doctorAdd', views.doctorAdd, name='doctorAdd'),
+    path('doctorEdit/<int:id>', views.doctorEdit, name='doctorEdit'),
+    path('doctorDelete/<int:id>', views.doctorDelete, name='doctorDelete'),
 ]

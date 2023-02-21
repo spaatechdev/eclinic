@@ -10,6 +10,11 @@ class UserManager(BaseUserManager): # Here
             raise ValueError("The given phone must be set")
         phone = self.normalize_email(phone)
         extra_fields['username'] = phone # username should be as phone
+        full_name_array = extra_fields['name'].split(" ", 1)
+        first_name = full_name_array[0]
+        last_name = full_name_array[len(full_name_array) - 1]
+        extra_fields['first_name'] = first_name
+        extra_fields['last_name'] = last_name
         user = self.model(phone=phone, **extra_fields)
         user.password = make_password(password)
         user.save(using=self._db)

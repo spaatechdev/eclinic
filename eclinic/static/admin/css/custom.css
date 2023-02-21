@@ -755,8 +755,8 @@ h6 {
     display: flex;
     align-items: center;
     font-size: 13px;
-    font-weight: 600;
-    color: #5a6372;
+    font-weight: 500;
+    color: #bdc5d1;
     transition: 0.3;
     padding: 10px 0 10px 36px;
     transition: 0.3s;
@@ -771,7 +771,7 @@ h6 {
 
 .sidebar-nav .nav-content a:hover,
 .sidebar-nav .nav-content a.active {
-    color: #8791a1;
+    color: #eaf2ff;
 }
 
 .sidebar-nav .nav-content a.active i {
@@ -1453,12 +1453,11 @@ label {
 .search input {
     height: 40px;
     font-size: 13px;
-    border: 2px solid #d6d4d4;
+    border: 2px solid #6d8ebf!important;
 }
 
 .search input:focus {
     box-shadow: none;
-    border: 2px solid blue;
 }
 
 .search button {
@@ -1466,9 +1465,9 @@ label {
     top: 5px;
     right: 5px;
     height: 30px;
-    width: 110px;
+    padding: 5px 15px;
     border-radius: 4px;
-    background: #0d6efd;
+    background: #376fc3!important;
 }
 
 .btn-group-sm>.btn,
@@ -1478,4 +1477,19 @@ label {
 
 .form-check-input[type=checkbox] {
     margin-top: 8px;
+}
+
+.plus-pstn {
+    top: 37%;
+}
+.bi-plus-square-fill::before {
+    font-size: 35px;
+}
+.btn-primary {
+    border: var(--bs-btn-border-width) solid #376fc3!important;
+    background-color: #376fc3!important;
+}
+.btn-primary:hover {
+    border: var(--bs-btn-border-width) solid #376fc3!important;
+    background-color: #376fc3!important;
 }

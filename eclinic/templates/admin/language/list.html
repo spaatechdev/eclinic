@@ -1,0 +1,170 @@
+{% extends "admin/base.html" %}
+{% load static %}
+{% load template_func %}
+
+{% block content %}
+<div class="pagetitle">
+    <h1>Language List</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'admin:dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item">Language List</li>
+        </ol>
+    </nav>
+</div>
+<section class="section">
+    {% if messages %}
+    {% for message in messages %}
+    {% if forloop.counter == 1 %}
+    <div class="{{ message.tags }}" style="height: 30px;">{{ message }}</div>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4 class="card-title">Languages</h4>
+                        </div>
+                        {% if request.user.is_superuser == 1 or 'add_language'|get_session_permission:request is not None %}
+                        <div class="col-md-6 mt-3">
+                            <div class="float-end">
+                                <a href="{% url 'admin:languageAdd' %}" class="btn btn-primary btn-sm">Add</a>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-lg-4 mb-3">
+                        <form method="GET" id="search_form">
+                            <div class="search">
+                                <input type="text" class="form-control key_search" name="keyword" value="{{ request.GET.keyword }}" placeholder="Search Here">
+                                <button class="btn btn-primary" type="submit">Search</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row fs-12">
+                        <div class="table-responsive">
+                            <table class="table table-striped datatable">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            SL No.
+                                        </th>
+                                        <th>
+                                            Language
+                                        </th>
+                                        <th>
+                                            Action
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for each in result %}
+                                    <tr>
+                                        <td class="py-1">
+                                            {{forloop.counter}}
+                                        </td>
+                                        <td>
+                                            {{each.name}}
+                                        </td>
+                                        <td>
+                                            {% if request.user.is_superuser == 1 or 'change_langugae'|get_session_permission:request is not None %}
+                                            <a href="{% url 'admin:languageEdit' each.id %}" class="btn btn-info btn-sm">
+                                                Edit </a>
+                                            {% endif %}
+                                            {% if request.user.is_superuser == 1 or 'delete_language'|get_session_permission:request is not None %}
+                                            <!-- <a onclick="return confirm('Are you sure you want to delete this?')"
+                                                href="{% url 'admin:languageDelete' each.id %}" class="btn btn-danger btn-sm">
+                                                Delete </a> -->
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {% if result.paginator.num_pages > 1 %}
+                    <div class="float-end mt-3 custom_paginator">
+                        <ul class="pagination justify-content-center">
+                            {% if result.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?{% param_replace page=1 %}">
+                                    First
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="page-item paginate_button disabled">
+                                <a class="page-link" href="#">
+                                    First
+                                </a>
+                            </li>
+                            {% endif %}
+                            {% if result.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?{% param_replace page=result.previous_page_number %}">
+                                    &laquo;
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#">
+                                    &laquo;
+                                </a>
+                            </li>
+                            {% endif %}
+                            {% for i in result.paginator.page_range %}
+                            {% if result.number == i %}
+                            <li class="page-item active">
+                                <a class="page-link" href="#">{{ i }} <span class="sr-only"></span>
+                                </a>
+                            </li>
+                            {% elif result.number > i|add:"-3" and result.number < i|add:"+3"%} 
+                            <li class="page-item"><a class="page-link" href="?{% param_replace page=i %}">{{ i }}</a></li>
+                            {% endif %}
+                            {% endfor %}
+                            {% if result.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?{% param_replace page=result.next_page_number %}">
+                                    &raquo;
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#">
+                                    &raquo;
+                                </a>
+                            </li>
+                            {% endif %}
+                            {% if result.paginator.num_pages != result.number %}
+                            <li class="page-item">
+                                <a class="page-link" href="?{% param_replace page=result.paginator.num_pages %}">
+                                    Last
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="page-item disabled"><a class="page-link" href="#">Last</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block js %}
+<script>
+    // var timer;
+    // $(document).on('keyup', '.key_search', function () {
+    //     timer && clearTimeout(timer);
+    //     timer = setTimeout(function () {
+    //         $("#search_form").submit();
+    //     }, 300);
+    // });
+</script>
+{% endblock %}
